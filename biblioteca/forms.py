@@ -23,7 +23,7 @@ class CiudadForm(forms.ModelForm):
 class BibliotecaForm(forms.ModelForm):
     class Meta:
         model = Biblioteca
-        fields = ['nombre', 'direccion', 'ciudad', 'telefono']
+        fields = ['nombre', 'direccion', 'ciudad_id', 'telefono']
         widgets = {
             'nombre': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -33,7 +33,7 @@ class BibliotecaForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Direccion Biblioteca'
             }),
-            'ciudad': forms.Select(attrs={
+            'ciudad_id': forms.Select(attrs={
                 'class': 'form-control',
             }),
             'telefono': forms.NumberInput(attrs={
@@ -56,7 +56,7 @@ class GeneroForm(forms.ModelForm):
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ['titulo', 'autor', 'genero', 'isbn', 'descripcion', 'biblioteca']
+        fields = ['titulo', 'autor', 'genero_id', 'isbn', 'descripcion', 'biblioteca_id']
         widgets = {
             'titulo': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -66,7 +66,7 @@ class LibroForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Autor Libro'
             }),
-            'genero': forms.Select(attrs={
+            'genero_id': forms.Select(attrs={
                 'class': 'form-control'
             }),
             'isbn': forms.NumberInput(attrs={
@@ -77,7 +77,7 @@ class LibroForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Descripcion de la historia del Libro'
             }),
-            'biblioteca': forms.Select(attrs={
+            'biblioteca_id': forms.Select(attrs={
                 'class': 'form-control'
             })
         }

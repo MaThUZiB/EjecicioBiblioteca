@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 class Ciudad(models.Model):
     nombre = models.CharField(max_length=80)
-    Campo01 = models.CharField(max_length=80)
-    Campo02 = models.CharField(max_length=80)
+    campo01 = models.CharField(max_length=80)
+    campo02 = models.CharField(max_length=80)
 
 class Biblioteca(models.Model):
     nombre = models.CharField(max_length=80)
