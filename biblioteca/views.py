@@ -12,10 +12,18 @@ def index(request):
 #~~~~~~~~~~~~~~~~~~~~~~~Ciudad~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def listar_ciudades(request):
-    ciudades = Ciudad.objects.all()
-    return render(request, 'listar_ciudades.html', {
-        'ciudades': ciudades
+    q = request.GET.get("q", "")
+
+    if q:
+        ciudades = Ciudad.objects.filter(nombre__icontains=q)
+    else:
+        ciudades = Ciudad.objects.all()
+
+    return render(request, "listar_ciudades.html", {
+        "ciudades": ciudades,
+        "q": q
     })
+
 
 def agregar_ciudad(request):
     if request.method == 'POST':
@@ -26,7 +34,8 @@ def agregar_ciudad(request):
     else:
         form = CiudadForm()
     return render(request, 'formulario_ciudad.html',{
-        'form': form
+        'form': form,
+        'titulo': 'Agregar Ciudad'
     })
 
 def editar_ciudad(request, id):
@@ -39,7 +48,8 @@ def editar_ciudad(request, id):
     else:
         form = CiudadForm(instance=ciudad)
     return render(request, 'formulario_ciudad.html', {
-        'form':form
+        'form':form,
+        'titulo': 'Editar Ciudad'
     })
 
 def eliminar_ciudad(request, id):
@@ -53,9 +63,15 @@ def eliminar_ciudad(request, id):
 #~~~~~~~~~~~~~~~~~~~~~~~Genero~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def listar_generos(request):
-    generos = Genero.objects.all()
+    q = request.GET.get("q", "")
+    if q:
+        generos = generos.filter(nombre__icontains=q)
+    else:
+        generos = Genero.objects.all()
+
     return render (request, 'listar_generos.html', {
-        'generos': generos
+        'generos': generos,
+        'q': q
     })
 
 def agregar_genero(request):
@@ -67,7 +83,8 @@ def agregar_genero(request):
     else:
         form = GeneroForm()
     return render(request, 'formulario_genero.html', {
-        'form': form
+        'form': form,
+        'titulo': 'Agregar Género'
     })
 
 def editar_genero(request, id):
@@ -80,7 +97,8 @@ def editar_genero(request, id):
     else:
         form = GeneroForm(instance=genero)
     return render(request, 'formulario_genero.html', {
-        'form':form
+        'form':form,
+        'titulo': 'Editar Género'
     })
 
 def eliminar_genero(request, id):
@@ -94,12 +112,18 @@ def eliminar_genero(request, id):
 #~~~~~~~~~~~~~~~~~~~~~Biblioteca~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def listar_bibliotecas(request):
-    bibliotecas = Biblioteca.objects.all()
+    q = request.GET.get("q", "")
+    if q:
+        bibliotecas = Biblioteca.objects.filter(nombre__icontains=q)
+    else:
+        bibliotecas = Biblioteca.objects.all()
     return render(request, 'listar_bibliotecas.html', {
-        'bibliotecas': bibliotecas
+        'bibliotecas': bibliotecas,
+        'q': q
     })
 
 def agregar_biblioteca(request):
+    ciudades = Ciudad.objects.all()
     if request.method=='POST':
         form = BibliotecaForm(request.POST)
         if form.is_valid():
@@ -108,10 +132,13 @@ def agregar_biblioteca(request):
     else:
         form = BibliotecaForm()
     return render (request, 'formulario_biblioteca.html', {
-        'form': form
+        'form': form,
+        'ciudades': ciudades,
+        'titulo': 'Agregar Biblioteca'
     })
 
 def editar_biblioteca(request, id):
+    ciudades = Ciudad.objects.all()
     biblioteca = get_object_or_404(Biblioteca, pk=id)
     if request.method=='POST':
         form = BibliotecaForm(request.POST, instance=biblioteca)
@@ -121,7 +148,9 @@ def editar_biblioteca(request, id):
     else:
         form = BibliotecaForm(instance=biblioteca)
     return render(request, 'formulario_biblioteca.html', {
-        'form': form
+        'form': form,
+        'ciudades': ciudades,
+        'titulo': 'Editar Biblioteca'
     })
 
 def eliminar_biblioteca(request, id):
@@ -135,12 +164,26 @@ def eliminar_biblioteca(request, id):
 #~~~~~~~~~~~~~~~~~~~~~~~Libros~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def listar_libros(request):
+    query = request.GET.get("q", "")  # Obtener lo que escribe el usuario
     libros = Libro.objects.all()
-    return render(request, 'listar_libros.html', {
-        'libros': libros
+
+    if query:
+        libros = libros.filter(
+            titulo__icontains=query
+        ) | libros.filter(
+            autor__icontains=query
+        ) | libros.filter(
+            descripcion__icontains=query
+        )
+
+    return render(request, "listar_libros.html", {
+        "libros": libros,
+        "query": query
     })
 
 def agregar_libro(request):
+    generos = Genero.objects.all()
+    bibliotecas = Biblioteca.objects.all()
     if request.method=='POST':
         form = LibroForm(request.POST)
         if form.is_valid():
@@ -149,10 +192,15 @@ def agregar_libro(request):
     else:
         form = LibroForm()
     return render(request, 'formulario_libro.html', {
-        'form': form
+        'form': form,
+        'generos': generos,
+        'bibliotecas': bibliotecas,
+        'titulo': 'Agregar Libro'
     })
 
 def editar_libro(request, id):
+    generos = Genero.objects.all()
+    bibliotecas = Biblioteca.objects.all()
     libro = get_object_or_404(Libro, pk=id)
     if request.method == 'POST':
         form = LibroForm(request.POST, instance=libro)
@@ -162,7 +210,10 @@ def editar_libro(request, id):
     else:
         form = LibroForm(instance=libro)
     return render(request, 'formulario_libro.html', {
-        'form': form
+        'form': form,
+        'generos': generos,
+        'bibliotecas': bibliotecas,
+        'titulo': 'Editar Libro'
     })
 
 def eliminar_libro(request, id):

@@ -7,20 +7,19 @@
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
         <!-- BOTÓN NUEVO -->
-        <a href="{% url 'agregar_libro' %}" class="btn btn-success btn-lg">
+        <a href="{% url 'agregar_genero' %}" class="btn btn-success btn-lg">
             + Ingresar Nuevo
         </a>
 
         <!-- BUSCADOR -->
         <form method="GET" class="d-flex w-100 w-md-50 input-group">
-            <input type="text" name="q" value="{{ query }}" class="form-control form-control-lg"
-                placeholder="Buscar libros...">
+            <input type="text" name="q" value="{{ q }}" class="form-control form-control-lg"
+                placeholder="Buscar géneros...">
             <button class="btn btn-primary btn-lg" type="submit">Buscar</button>
         </form>
 
     </div>
 </div>
-
 
 <!-- CONTENIDO -->
 <div class="container">
@@ -28,7 +27,7 @@
     <div class="card shadow-lg border-0">
         <div class="card-body">
 
-            <h2 class="text-center mb-4 fw-bold">Listado de Libros</h2>
+            <h2 class="text-center mb-4 fw-bold">Listado de Géneros</h2>
 
             <!-- TABLA -->
             <div class="table-responsive">
@@ -37,38 +36,35 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Título</th>
-                            <th>Autor</th>
-                            <th>Género</th>
-                            <th>ISBN</th>
-                            <th>Descripción</th>
-                            <th>Biblioteca</th>
+                            <th>Nombre</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {% for libro in libros %}
+                        {% for genero in generos %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ libro.titulo }}</td>
-                            <td>{{ libro.autor }}</td>
-                            <td>{{ libro.genero_id.nombre }}</td>
-                            <td>{{ libro.isbn }}</td>
-                            <td>{{ libro.descripcion }}</td>
-                            <td>{{ libro.biblioteca_id.nombre }}</td>
+                            <td>{{ genero.nombre }}</td>
+
                             <td class="d-flex flex-column flex-lg-row justify-content-center gap-2">
 
-                                <a href="{% url 'editar_libro' libro.id %}" class="btn btn-warning btn-sm">Editar</a>
-                                <a href="{% url 'eliminar_libro' libro.id %}" onclick="return confirm('¿Eliminar libro?')" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="{% url 'editar_genero' genero.id %}" class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+
+                                <a href="{% url 'eliminar_genero' genero.id %}" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Eliminar este género?')">
+                                    Eliminar
+                                </a>
 
                             </td>
                         </tr>
 
                         {% empty %}
                         <tr>
-                            <td colspan="8" class="py-3">
-                                <em>No hay libros registrados.</em>
+                            <td colspan="3" class="py-3">
+                                <em>No hay géneros registrados.</em>
                             </td>
                         </tr>
                         {% endfor %}
@@ -81,4 +77,5 @@
     </div>
 
 </div>
+
 {% endblock %}

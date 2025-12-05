@@ -1,0 +1,41 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container my-5">
+
+    <div class="p-4 shadow-lg rounded bg-white mx-auto" style="max-width: 600px;">
+        
+        <h2 class="text-center mb-4">
+            {{ titulo }}
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Renderizado limpio de cada campo -->
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'listar_libros' %}" class="btn btn-secondary">
+                    Volver
+                </a>
+                <button type="submit" class="btn btn-primary px-4">
+                    Guardar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
