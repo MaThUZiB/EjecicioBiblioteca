@@ -18,6 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from biblioteca.views import *
 urlpatterns = [
+    path('usuario/detalle/<int:id>', detalle_usuario, name = 'detalle_usuario'),
+    path('usuario/eliminar/<int:id>', eliminar_usuario, name = 'eliminar_usuario'),
+    path('usuario/editar/<int:id>', editar_usuario, name = 'editar_usuario'),
+    path('usuario/agregar', agregar_usuario, name = 'agregar_usuario'),
+    path('usuario/', listar_usuarios, name = 'listar_usuarios'),
+    
     path('libro/eliminar/<int:id>', eliminar_libro, name = 'eliminar_libro'),
     path('libro/editar/<int:id>', editar_libro, name = 'editar_libro'),
     path('libro/agregar', agregar_libro, name = 'agregar_libro'),

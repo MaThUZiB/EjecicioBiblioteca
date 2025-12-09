@@ -1,0 +1,45 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container my-5">
+
+    <div class="p-4 shadow-lg rounded bg-white mx-auto" style="max-width: 600px;">
+        
+        <h2 class="text-center mb-4 fw-bold">
+            Detalle del Usuario
+        </h2>
+
+        <!-- INFO DEL USUARIO -->
+        <p><strong>ID:</strong> {{ usuario.id }}</p>
+        <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+
+        <hr>
+
+        <!-- LIBROS PRESTADOS -->
+        <h4 class="mb-3 text-primary">Libros prestados</h4>
+
+        {% with libros=usuario.libros_prestamo.all %}
+            {% if libros %}
+                <ul class="list-group">
+                    {% for libro in libros %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ libro.titulo }}
+                            <span class="badge bg-success">ID: {{ libro.id }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Este usuario no tiene libros prestados.</p>
+            {% endif %}
+        {% endwith %}
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary">Volver</a>
+            <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning">Editar</a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

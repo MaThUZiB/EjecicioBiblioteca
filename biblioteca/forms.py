@@ -81,3 +81,32 @@ class LibroForm(forms.ModelForm):
                 'class': 'form-control'
             })
         }
+        
+class EncargadoBibliotecaForm(forms.ModelForm):
+    class Meta:
+        model = EncargadoBiblioteca
+        fields = ['nombre', 'biblioteca_id', 'email']
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre Encargado'
+            }),
+        }
+        
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'email', 'libros_prestamo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre Usuario'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Email Usuario'
+            }),
+            'libros_prestamo': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-check'
+            })
+        }

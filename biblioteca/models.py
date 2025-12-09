@@ -34,3 +34,20 @@ class Libro(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    
+class EncargadoBiblioteca(models.Model):
+    nombre = models.CharField(max_length=80)
+    biblioteca_id = models.OneToOneField(Biblioteca, on_delete=models.CASCADE)
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.nombre
+        
+class Usuario(models.Model):
+    nombre = models.CharField(max_length=80)
+    email = models.EmailField()
+    libros_prestamo = models.ManyToManyField(Libro)
+    
+    def __str__(self):
+        return self.nombre

@@ -220,3 +220,66 @@ def eliminar_libro(request, id):
     libro = get_object_or_404(Libro, pk=id)
     libro.delete()
     return redirect( 'listar_libros')
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~Usuario~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def listar_usuarios(request):
+    q= request.GET.get("q", "")
+    if q:
+        usuarios = Usuario.objects.filter(nombre__icontains=q)
+    else:
+        usuarios = Usuario.objects.all()
+    return render(request, 'listar_usuarios.html', {
+        'usuarios': usuarios, 
+        'q': q
+        })
+    
+def agregar_usuario(request):
+    libros = Libro.objects.all()
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_usuarios')
+    else:
+        form = UsuarioForm()
+    return render(request, 'formulario_usuario.html', {
+        'form': form,
+        'titulo': 'Agregar Usuario',
+        'libros': libros
+    })
+    
+def editar_usuario(request, id):
+    libros = Libro.objects.all()
+    usuario = get_object_or_404(Usuario, pk=id)
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_usuarios')
+    else:
+        form = UsuarioForm(instance=usuario)
+    return render(request, 'formulario_usuario.html', {
+        'form': form,
+        'titulo': 'Editar Usuario',
+        'libros': libros
+    })
+
+def eliminar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, pk=id)
+    usuario.delete()
+    return redirect('listar_usuarios')
+
+def detalle_usuario(request, id):
+    usuario = get_object_or_404(Usuario, pk=id)
+    libros_usuario = usuario.libros_prestamo.all()
+    return render(request, 'detalle_usuario.html', {
+        'usuario': usuario,
+        'libros_usuario': libros_usuario
+    })
+    
+    
